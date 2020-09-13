@@ -14,7 +14,17 @@ class Generator
 {
 public:
 	static std::unique_ptr<TMB1> GenerateHarmonicSignal(int N, float A, float phi, float f);
+	// Delta in percent per period
+	static std::unique_ptr<TMB1> GenerateHarmonicSignalWithLinearInterpolation(int N, float A, float phi, float f, float delA, float delPhi, float delF);
 	static std::unique_ptr<TMB1> GeneratePolyHarmonicSignal(int k, int N, std::vector<float> A, std::vector<float> phi, std::vector<float> f);
+	static std::unique_ptr<TMB1> GeneratePolyHarmonicSignalWithLinearInterpolation(  int k
+																				   , int N
+																				   , std::vector<float> A
+																				   , std::vector<float> phi
+																				   , std::vector<float> f
+																				   , std::vector<float> deltaA
+																				   , std::vector<float> deltaPhi
+																				   , std::vector<float> deltaF);
 
 	static inline void AllocateBufferAndInitSignalData(TMB1& signal, int N)
 	{

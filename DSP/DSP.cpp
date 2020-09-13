@@ -68,4 +68,17 @@ int main()
 		std::unique_ptr<TMB1> signal = Generator::GeneratePolyHarmonicSignal(5, 2048, A, phi, f);
 		SaveSignal("2", *signal);
 	}
+
+	// 3
+	{
+		std::vector<float> A = { 9, 9, 9, 9, 9 };
+		std::vector<float> f = { 1, 2, 3, 4, 5 };
+		std::vector<float> phi = { PI / 2, 0, PI / 4, PI / 3, PI / 6 };
+		std::vector<float> deltaA = { 10, 5, 3, 6, 7 };
+		std::vector<float> deltaF = { 19, 19, 19, 19, 19 };
+		std::vector<float> deltaPhi = { 3, 5, 10, 7, 6 };
+
+		std::unique_ptr<TMB1> signal = Generator::GeneratePolyHarmonicSignalWithLinearInterpolation(5, 2048, A, phi, f, deltaA, deltaPhi, deltaF);
+		SaveSignal("3", *signal);
+	}
 }
