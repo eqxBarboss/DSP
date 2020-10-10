@@ -14,71 +14,107 @@ int main()
 {
 	// VARIANT 5
 
-	// 1.a
+	// 2.1
 	{
-		const float A = 7;
-		const float f = 5;
-		const float phi[] = { PI, 0, PI / 3, PI / 6, PI / 2 };
+		const float A = 1;
+		const float f = 1;
+		const float phi = 0;
+		const int N = 2048;
+		const int doubleN = N * 2;
+		const int K = (float)(3 * N) / (float)4;
 
-		for (const auto value : phi)
+		std::vector<float> xskzA;
+		std::vector<float> xskzB;
+		std::vector<float> aFourier1;
+
+		for (int M = K; M <= doubleN; M++)
 		{
-			std::unique_ptr<TMB1> signal = Generator::GenerateHarmonicSignal(2048, A, value, f);
-			std::stringstream fileNameStream;
-			fileNameStream << std::fixed << std::setprecision(3) << "1.a A=" << A << " phi=" << value << " f=" << f;
-			SaveSignal(fileNameStream.str(), *signal);
+			std::unique_ptr<TMB1> signal = Generator::GenerateHarmonicSignal(N, M, 1, phi, 1);
+			xskzA.push_back(0.707 - GetXskzA(*signal.get()));
+			xskzB.push_back(0.707 - GetXskzB(*signal.get()));
+			aFourier1.push_back(1 - GetAFourier1(*signal.get(), 0));
 		}
+
+		TMB1 signalXskzA;
+		TMB1 signalXskzB;
+		TMB1 signalAFourier1;
+		Generator::AllocateBufferAndInitSignalData(signalXskzA, xskzA.size());
+		Generator::AllocateBufferAndInitSignalData(signalXskzB, xskzB.size());
+		Generator::AllocateBufferAndInitSignalData(signalAFourier1, aFourier1.size());
+		signalXskzA.totalTime = xskzA.size();
+		signalXskzB.totalTime = xskzB.size();
+		signalAFourier1.totalTime = aFourier1.size();
+
+		for (int i = 0; i < xskzA.size(); i++) signalXskzA.buffer[i] = xskzA[i];
+		for (int i = 0; i < xskzB.size(); i++) signalXskzB.buffer[i] = xskzB[i];
+		for (int i = 0; i < aFourier1.size(); i++) signalAFourier1.buffer[i] = aFourier1[i];
+
+		Generator::SetMinAndMax(signalXskzA);
+		Generator::SetMinAndMax(signalXskzB);
+		Generator::SetMinAndMax(signalAFourier1);
+
+		std::stringstream fileNameStream;
+		fileNameStream << std::fixed << std::setprecision(3) << "2.1 xskzA";
+		SaveSignal(fileNameStream.str(), signalXskzA);
+
+		std::stringstream fileNameStream1;
+		fileNameStream1 << std::fixed << std::setprecision(3) << "2.1 xskzB";
+		SaveSignal(fileNameStream1.str(), signalXskzB);
+
+		std::stringstream fileNameStream2;
+		fileNameStream2 << std::fixed << std::setprecision(3) << "2.1 signalAFourier1";
+		SaveSignal(fileNameStream2.str(), signalAFourier1);
 	}
 
-	// 1.b
+	// 2.2
 	{
-		const float A = 5;
-		const float phi = 3 * PI / 4;
-		const float f[] = { 1, 5, 11, 6, 3 };
+		const float A = 1;
+		const float f = 1;
+		const float phi = PI / 8;
+		const int N = 2048;
+		const int doubleN = N * 2;
+		const int K = (float)(3 * N) / (float)4;
 
-		for (const auto value : f)
+		std::vector<float> xskzA;
+		std::vector<float> xskzB;
+		std::vector<float> aFourier1;
+
+		for (int M = K; M <= doubleN; M++)
 		{
-			std::unique_ptr<TMB1> signal = Generator::GenerateHarmonicSignal(2048, A, phi, value);
-			std::stringstream fileNameStream;
-			fileNameStream << std::fixed << std::setprecision(3) << "1.b A=" << A << " phi=" << phi << " f=" << value;
-			SaveSignal(fileNameStream.str(), *signal);
+			std::unique_ptr<TMB1> signal = Generator::GenerateHarmonicSignal(N, M, 1, phi, 1);
+			xskzA.push_back(0.707 - GetXskzA(*signal.get()));
+			xskzB.push_back(0.707 - GetXskzB(*signal.get()));
+			aFourier1.push_back(1 - GetAFourier1(*signal.get(), 0));
 		}
-	}
 
-	// 1.c
-	{
-		const float f = 3;
-		const float phi = 3 * PI / 4;
-		const float A[] = { 4, 5, 3, 1, 7 };
+		TMB1 signalXskzA;
+		TMB1 signalXskzB;
+		TMB1 signalAFourier1;
+		Generator::AllocateBufferAndInitSignalData(signalXskzA, xskzA.size());
+		Generator::AllocateBufferAndInitSignalData(signalXskzB, xskzB.size());
+		Generator::AllocateBufferAndInitSignalData(signalAFourier1, aFourier1.size());
+		signalXskzA.totalTime = xskzA.size();
+		signalXskzB.totalTime = xskzB.size();
+		signalAFourier1.totalTime = aFourier1.size();
 
-		for (const auto value : A)
-		{
-			std::unique_ptr<TMB1> signal = Generator::GenerateHarmonicSignal(2048, value, phi, f);
-			std::stringstream fileNameStream;
-			fileNameStream << std::fixed << std::setprecision(3) << "1.c A=" << value << " phi=" << phi << " f=" << f;
-			SaveSignal(fileNameStream.str(), *signal);
-		}
-	}
+		for (int i = 0; i < xskzA.size(); i++) signalXskzA.buffer[i] = xskzA[i];
+		for (int i = 0; i < xskzB.size(); i++) signalXskzB.buffer[i] = xskzB[i];
+		for (int i = 0; i < aFourier1.size(); i++) signalAFourier1.buffer[i] = aFourier1[i];
 
-	// 2
-	{
-		std::vector<float> A = { 9, 9, 9, 9, 9 };
-		std::vector<float> f = { 1, 2, 3, 4, 5 };
-		std::vector<float> phi = { PI / 2, 0, PI / 4, PI / 3, PI / 6 };
+		Generator::SetMinAndMax(signalXskzA);
+		Generator::SetMinAndMax(signalXskzB);
+		Generator::SetMinAndMax(signalAFourier1);
 
-		std::unique_ptr<TMB1> signal = Generator::GeneratePolyHarmonicSignal(5, 2048, A, phi, f);
-		SaveSignal("2", *signal);
-	}
+		std::stringstream fileNameStream;
+		fileNameStream << std::fixed << std::setprecision(3) << "2.2 xskzA";
+		SaveSignal(fileNameStream.str(), signalXskzA);
 
-	// 3
-	{
-		std::vector<float> A = { 9, 9, 9, 9, 9 };
-		std::vector<float> f = { 1, 2, 3, 4, 5 };
-		std::vector<float> phi = { PI / 2, 0, PI / 4, PI / 3, PI / 6 };
-		std::vector<float> deltaA = { 10, 5, 3, 6, 7 };
-		std::vector<float> deltaF = { 19, 19, 19, 19, 19 };
-		std::vector<float> deltaPhi = { 3, 5, 10, 7, 6 };
+		std::stringstream fileNameStream1;
+		fileNameStream1 << std::fixed << std::setprecision(3) << "2.2 xskzB";
+		SaveSignal(fileNameStream1.str(), signalXskzB);
 
-		std::unique_ptr<TMB1> signal = Generator::GeneratePolyHarmonicSignalWithLinearInterpolation(5, 2048, A, phi, f, deltaA, deltaPhi, deltaF);
-		SaveSignal("3", *signal);
+		std::stringstream fileNameStream2;
+		fileNameStream2 << std::fixed << std::setprecision(3) << "2.2 signalAFourier1";
+		SaveSignal(fileNameStream2.str(), signalAFourier1);
 	}
 }

@@ -4,11 +4,11 @@
 
 namespace DSP
 {
-
-std::unique_ptr<TMB1> Generator::GenerateHarmonicSignal(int N, float A, float phi, float f)
+//N, M, 1, 0, 1
+std::unique_ptr<TMB1> Generator::GenerateHarmonicSignal(int N, int n, float A, float phi, float f)
 {
 	auto signal = std::make_unique<TMB1>();
-	AllocateBufferAndInitSignalData(*signal, N);
+	AllocateBufferAndInitSignalData(*signal, n);
 
 	const float multiplier = 2 * PI * f / N;
 
@@ -53,7 +53,7 @@ std::unique_ptr<TMB1> Generator::GeneratePolyHarmonicSignal(int k, int N, std::v
 
 	for (int i = 0; i < k; i++)
 	{
-		std::unique_ptr<TMB1> harmonic = GenerateHarmonicSignal(N, A[i], phi[i], f[i]);
+		std::unique_ptr<TMB1> harmonic = GenerateHarmonicSignal(N, N, A[i], phi[i], f[i]);
 		for (int j = 0; j < harmonic->dataSize; j++)
 		{
 			signal->buffer[j] += harmonic->buffer[j];

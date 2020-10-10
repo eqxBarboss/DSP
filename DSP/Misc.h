@@ -5,6 +5,8 @@
 namespace DSP
 {
 
+constexpr float PI = 3.14159265358979323846;
+
 #pragma pack(push, 1)
 struct TMB1
 {
@@ -30,6 +32,10 @@ struct TMB1
 };
 #pragma pack(pop)
 
-void SaveSignal(std::string fileName, const TMB1 &signal);
+void SaveSignal(std::string fileName, const TMB1& signal);
+
+float GetXskzA(const TMB1& signal);
+float GetXskzB(const TMB1& signal);
+float GetAFourier1(const TMB1& signal, float phi);
 
 }
