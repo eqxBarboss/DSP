@@ -25,7 +25,7 @@ struct TMB1
 
 	~TMB1()
 	{
-		free(buffer);
+		//free(buffer);
 	}
 };
 #pragma pack(pop)
